@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Musical$Instrument</key>
+	<string>T</string>
+	<key>Ocean</key>
+	<string>AIP</string>
+	<key>Ice Cream</key>
+	<string>CMPRSV</string>
+	<key>Girl&apos;s Name</key>
+	<string>ABCDEFGHIJLMNOPRSTW</string>
+	<key>Boy&apos;s Name</key>
+	<string>ABCDEFGHIJKLMNOPRSTWZ</string>
+	<key>Vegetable</key>
+	<string>ABCKLMOPSTZ</string>
+	<key>Country</key>
+	<string>ABCDEFGHIJKLMNPRSTUYZ</string>
+	<key>Animal</key>
+	<string>ABCDEFGHIJLMNOPRSTWYZ</string>
+	<key>Color</key>
+	<string>BGOPRWY</string>
+	<key>Fruit</key>
+	<string>ABGKLMOPRSW</string>
+</dict>
+</plist>
