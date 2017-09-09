@@ -2,8 +2,88 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>Place</key>
+	<string>ABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
+	<key>Car Brand</key>
+	<string>ABCDFHIJKLMPRSTV</string>
+	<key>Last Name</key>
+	<string>ABCDEFGHIJKLMNOPRSTWZ</string>
+	<key>Unit of$Measurement</key>
+	<string>CFILKMNPT</string>
+	<key>Clothing</key>
+	<string>DHJLPST</string>
+	<key>Language</key>
+	<string>ABCDEFGHIJLMPRSTUV</string>
+	<key>Street Name</key>
+	<string>ABCDEFGHIJKLMNOPQRSTUVW</string>
+	<key>Province or$State</key>
+	<string>ACFHIKMNOSTW</string>
+	<key>4-Letter Word</key>
+	<string>ABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
+	<key>3-Letter Word</key>
+	<string>ABCDEFGHIJLMNOPRSTUVWYZ</string>
+	<key>TV Show</key>
+	<string>ABCDEFGHIJLMNOPRSTVW</string>
+	<key>Olympic Event</key>
+	<string>ABCDEFGHIJRSTVW</string>
+	<key>Company</key>
+	<string>ABCDEFGHIJKLMNOPQSTUVWXY</string>
+	<key>Element</key>
+	<string>ABCFGHILMNOPRSTUZ</string>
+	<key>Herb/Spice</key>
+	<string>BCGNOPRST</string>
+	<key>Flower</key>
+	<string>CDLORST</string>
+	<key>Verb</key>
+	<string>ABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
+	<key>Adjective</key>
+	<string>ABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
+	<key>Noun</key>
+	<string>ABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
+	<key>Pizza Topping</key>
+	<string>ABCHMOPST</string>
+	<key>Appliance</key>
+	<string>ADFMRTW</string>
+	<key>Holiday</key>
+	<string>BCFHKNV</string>
+	<key>Acronym</key>
+	<string>ABCGILST</string>
+	<key>Junk Food</key>
+	<string>BCDFHINP</string>
+	<key>Breakfast Food</key>
+	<string>BCEHMPSTW</string>
+	<key>Occupation</key>
+	<string>ABCDEFGHIJKLMNOPQRSTUVZ</string>
+	<key>Cartoon$Character</key>
+	<string>ABCDEFHMPTWY</string>
+	<key>Musician</key>
+	<string>ABCDEFGHIJKLMNOPRST</string>
+	<key>Actor/Actress</key>
+	<string>ABCDEFGHIJKLMNOPRST</string>
+	<key>School Subject</key>
+	<string>ABCDEGHMPS</string>
+	<key>Song</key>
+	<string>ABCDEFGHIJKLMNOPQRSTUVWY</string>
+	<key>Emotion</key>
+	<string>ABCDEGHIJMSW</string>
+	<key>Planet</key>
+	<string>EJMNSUV</string>
+	<key>Continent</key>
+	<string>AENS</string>
+	<key>Internal Organ</key>
+	<string>ABHIKLPS</string>
+	<key>Movie Title</key>
+	<string>ABCDEFGHIJKLMNOPQRSTUVWY</string>
+	<key>Body Part</key>
+	<string>ABEFHKLMNT</string>
+	<key>Reptile/$Amphibian</key>
+	<string>FLTS</string>
+	<key>Beverage</key>
+	<string>ACIJLMOTW</string>
+	<key>Dairy Product</key>
+	<string>CIM</string>
 	<key>Musical$Instrument</key>
-	<string>T</string>
+	<string>CDFGHPSTVX</string>
 	<key>Ocean</key>
 	<string>AIP</string>
 	<key>Ice Cream</key>

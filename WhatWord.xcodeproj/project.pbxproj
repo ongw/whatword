@@ -16,6 +16,7 @@
 		DE1235DD1F52344B0078DE7A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DE1235DC1F52344B0078DE7A /* Assets.xcassets */; };
 		DE1235E01F52344B0078DE7A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE1235DE1F52344B0078DE7A /* LaunchScreen.storyboard */; };
 		DE1235EC1F54D8E00078DE7A /* Categories.plist in Resources */ = {isa = PBXBuildFile; fileRef = DE1235EB1F54D8E00078DE7A /* Categories.plist */; };
+		DE1469471F63288800597356 /* MSButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE1469461F63288800597356 /* MSButtonNode.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		DE1235DF1F52344B0078DE7A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DE1235E11F52344B0078DE7A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DE1235EB1F54D8E00078DE7A /* Categories.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Categories.plist; sourceTree = "<group>"; };
+		DE1469461F63288800597356 /* MSButtonNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MSButtonNode.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +68,7 @@
 				DE1235D11F52344B0078DE7A /* GameScene.sks */,
 				DE1235EB1F54D8E00078DE7A /* Categories.plist */,
 				DE1235D31F52344B0078DE7A /* Actions.sks */,
+				DE1469461F63288800597356 /* MSButtonNode.swift */,
 				DE1235D51F52344B0078DE7A /* GameScene.swift */,
 				DE1235D71F52344B0078DE7A /* GameViewController.swift */,
 				DE1235D91F52344B0078DE7A /* Main.storyboard */,
@@ -155,6 +158,7 @@
 				DE1235D61F52344B0078DE7A /* GameScene.swift in Sources */,
 				DE1235D81F52344B0078DE7A /* GameViewController.swift in Sources */,
 				DE1235D01F52344B0078DE7A /* AppDelegate.swift in Sources */,
+				DE1469471F63288800597356 /* MSButtonNode.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -279,6 +283,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = C79RLRW3DJ;
 				INFOPLIST_FILE = WhatWord/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.WesO.WhatWord;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -292,6 +297,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = C79RLRW3DJ;
 				INFOPLIST_FILE = WhatWord/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.WesO.WhatWord;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -318,6 +324,7 @@
 				DE1235E61F52344B0078DE7A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
