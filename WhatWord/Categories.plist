@@ -35,9 +35,9 @@
 	<key>Flower</key>
 	<string>CDLORST</string>
 	<key>Verb</key>
-	<string>ABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
+	<string>ABCDEFGHIJKLMNOPQRSTUVWYZ</string>
 	<key>Adjective</key>
-	<string>ABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
+	<string>ABCDEFGHIJKLMNOPQRSTUVWYZ</string>
 	<key>Noun</key>
 	<string>ABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
 	<key>Pizza Topping</key>

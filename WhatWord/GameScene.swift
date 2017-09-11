@@ -43,6 +43,16 @@ class GameScene: SKScene {
     var categoryLabelShort: SKLabelNode! // For short category names
     var categoryLabelLong1: SKLabelNode! // For long category names
     var categoryLabelLong2: SKLabelNode! // For long category names
+    var iTop: SKSpriteNode! // For letter I
+    var iBottom: SKSpriteNode! // For letter I
+    var timerOn: Bool = false
+    
+    /* Initialize game over elements */
+    /* Initialize menu elements */
+    var gameOverTopBackground: SKSpriteNode!
+    var gameOverBottomBackground: SKSpriteNode!
+    var gameOverBanner: MSButtonNode!
+    var restartButton: MSButtonNode!
     
     /* Label/var to track start timer */
     var startTimerLabel: SKLabelNode!
@@ -106,6 +116,8 @@ class GameScene: SKScene {
         
         /* Set up letter label */
         letterLabel = self.childNode(withName: "letterLabel") as! SKLabelNode
+        iTop = self.childNode(withName: "iTop") as! SKSpriteNode
+        iBottom = self.childNode(withName: "iBottom") as! SKSpriteNode
         
         /* Set up category labels */
         categoryLabelShort = self.childNode(withName: "categoryLabelShort") as! SKLabelNode
@@ -113,7 +125,7 @@ class GameScene: SKScene {
         categoryLabelLong2 = self.childNode(withName: "categoryLabelLong2") as! SKLabelNode
         
         /* Set up game timer */
-        gameTimerLabel = titleBottomBackground.childNode(withName: "gameTimerLabel") as! SKLabelNode
+        gameTimerLabel = self.childNode(withName: "gameTimerLabel") as! SKLabelNode
         
         /* Set up main menu elements */
         titleTopBackground = self.childNode(withName: "titleTopBackground") as! SKSpriteNode
@@ -149,6 +161,9 @@ class GameScene: SKScene {
                 
                 /* Display game time */
                 self.gameTime = self.startTime
+                
+                /* Start game timer */
+                self.timerOn = true
             }
         }
         
@@ -160,15 +175,66 @@ class GameScene: SKScene {
         decreaseButton.selectedHandler = {
             self.startTime -= 1
         }
+        
+        /* Set up game over elements */
+        gameOverTopBackground = self.childNode(withName: "gameOverTopBackground") as! SKSpriteNode
+        gameOverBottomBackground = self.childNode(withName: "gameOverBottomBackground") as! SKSpriteNode
+        gameOverBanner = self.childNode(withName: "gameOverBanner") as! MSButtonNode
+        restartButton = gameOverBottomBackground.childNode(withName: "restartButton") as! MSButtonNode
+        
+        /* Set play button handler */
+        restartButton.selectedHandler = {
+            
+            /* Play animation */
+            self.gameOverTopBackground.run(self.moveRightAction)
+            self.gameOverBottomBackground.run(self.moveRightAction)
+            
+            self.gameOverBanner.run(self.moveLeftAction) {
+                
+                /* Display category */
+                self.getRandomCategory()
+                
+                /* Enable touches */
+                self.isUserInteractionEnabled = true
+                
+                /* Display game time */
+                self.gameTime = self.startTime
+                
+                /* Start game timer */
+                self.timerOn = true
+            }
+        }
 
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         getRandomCategory()
+        
+        /* Reset game timer appearance */
+        self.gameTimerLabel.removeAllActions()
+        self.gameTimerLabel.setScale(1)
+        self.gameTimerLabel.alpha = 1
+        
+        /* Set game timer value */
+        self.gameTime = self.startTime
     }
     
     override func update(_ currentTime: TimeInterval) {
-        // Called before each frame is rendered
+        
+        /* Check if game started */
+        if timerOn {
+            if !gameTimerLabel.hasActions(){
+                
+                /* Run animation and decrement timer */
+                gameTimerLabel.run(SKAction(named: "Pulse")!) {
+                    self.gameTime -= 1
+                }
+            }
+        }
+        
+        if gameTime <= 0 {
+            
+        }
     }
     
     func getRandomCategory() {
@@ -225,7 +291,37 @@ class GameScene: SKScene {
             randLetter = String((categoryDictionary[randomCategory]?.characters.shuffled().first)!)
         }
     
+        if randLetter == "I" {
+            iTop.isHidden = false
+            iBottom.isHidden = false
+        }
+        else {
+            iTop.isHidden = true
+            iBottom.isHidden = true
+        }
         letterLabel.text = randLetter
     }
     
+    func runGameOver() {
+        
+        /* Play animation */
+        gameOverTopBackground.run(moveLeftAction)
+        gameOverBottomBackground.run(moveLeftAction)
+        
+        gameOverBanner.run(moveRightAction) {
+            
+            /* Display category */
+            self.getRandomCategory()
+            
+            /* Enable touches */
+            self.isUserInteractionEnabled = true
+            
+            /* Display game time */
+            self.gameTime = self.startTime
+            
+            /* Start game timer */
+            self.timerOn = true
+        }
+
+    }
 }
