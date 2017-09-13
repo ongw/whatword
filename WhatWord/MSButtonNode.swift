@@ -9,7 +9,7 @@
 import SpriteKit
 
 enum MSButtonNodeState {
-    case msButtonNodeStateActive, msButtonNodeStateSelected, msButtonNodeStateHidden
+    case msButtonNodeStateActive, msButtonNodeStateSelected, msButtonNodeStateHidden, msButtonNodeStateInactive
 }
 
 class MSButtonNode: SKSpriteNode {
@@ -22,6 +22,7 @@ class MSButtonNode: SKSpriteNode {
         didSet {
             switch state {
             case .msButtonNodeStateActive:
+        
                 /* Enable touch */
                 self.isUserInteractionEnabled = true
                 
@@ -39,6 +40,8 @@ class MSButtonNode: SKSpriteNode {
                 /* Hide */
                 self.alpha = 0
                 break
+            default:
+                self.isUserInteractionEnabled = false
             }
         }
     }
@@ -55,12 +58,16 @@ class MSButtonNode: SKSpriteNode {
     
     // MARK: - Touch handling
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if state != .msButtonNodeStateInactive {
         state = .msButtonNodeStateSelected
+        }
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if state != .msButtonNodeStateInactive {
         selectedHandler()
-        state = .msButtonNodeStateActive
+        state = .msButtonNodeStateInactive
+        }
     }
     
 }

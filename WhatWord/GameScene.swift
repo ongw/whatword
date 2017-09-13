@@ -8,6 +8,8 @@
 
 import SpriteKit
 import GameplayKit
+import AudioToolbox
+import AVFoundation
 
 extension MutableCollection where Indices.Iterator.Element == Index {
     /// Shuffles the contents of this collection.
@@ -51,8 +53,10 @@ class GameScene: SKScene {
     /* Initialize menu elements */
     var gameOverTopBackground: SKSpriteNode!
     var gameOverBottomBackground: SKSpriteNode!
-    var gameOverBanner: MSButtonNode!
+    var gameOverBanner: SKSpriteNode!
     var restartButton: MSButtonNode!
+    var homeButton: MSButtonNode!
+    
     
     /* Label/var to track start timer */
     var startTimerLabel: SKLabelNode!
@@ -82,6 +86,7 @@ class GameScene: SKScene {
             self.gameTimerLabel.text = String(self.gameTime)
         }
     }
+    var maxGameTime: Int!
     
     /* Initialize menu elements */
     var titleTopBackground: SKSpriteNode!
@@ -94,7 +99,11 @@ class GameScene: SKScene {
     /* Initialize movement actions */
     let moveRightAction: SKAction = SKAction.moveTo(x: 320, duration: 1)
     let moveLeftAction: SKAction = SKAction.moveTo(x: -320, duration: 1)
-    let resetAction: SKAction = SKAction.moveTo(x: 0, duration: 1)
+    let resetAction: SKAction = SKAction.moveTo(x: 0, duration: 0.5)
+    
+    /* Initialize sound elements */
+    var player: AVAudioPlayer?
+    var tickPlayer: AVAudioPlayer?
     
     override func didMove(to view: SKView) {
         
@@ -140,12 +149,18 @@ class GameScene: SKScene {
         
         moveRightAction.timingMode = .easeIn
         moveLeftAction.timingMode = .easeIn
+        resetAction.timingMode = .easeIn
         
         /* Disable touches */
         self.isUserInteractionEnabled = false
         
         /* Set play button handler */
-        playBanner.selectedHandler = {
+        playBanner.selectedHandler = { [unowned self] in
+            
+            self.playTicking()
+            
+            /* Prevent multiple taps on button */
+            self.playBanner.state = .msButtonNodeStateInactive
             
             /* Play animation */
             self.titleTopBackground.run(self.moveLeftAction)
@@ -160,30 +175,43 @@ class GameScene: SKScene {
                 self.isUserInteractionEnabled = true
                 
                 /* Display game time */
-                self.gameTime = self.startTime
+                self.maxGameTime = self.startTime
+                self.gameTime = self.maxGameTime
+                self.gameTimerLabel.isHidden = false
                 
                 /* Start game timer */
                 self.timerOn = true
+                
+                /* Re-enable taps */
+                self.playBanner.state = .msButtonNodeStateActive
             }
         }
         
         /* Set increase/decrease button handler */
-        increaseButton.selectedHandler = {
+        increaseButton.selectedHandler = { [unowned self] in
             self.startTime += 1
+            self.increaseButton.state = .msButtonNodeStateActive
         }
         
-        decreaseButton.selectedHandler = {
+        decreaseButton.selectedHandler = { [unowned self] in
             self.startTime -= 1
+            self.increaseButton.state = .msButtonNodeStateActive
         }
         
         /* Set up game over elements */
         gameOverTopBackground = self.childNode(withName: "gameOverTopBackground") as! SKSpriteNode
         gameOverBottomBackground = self.childNode(withName: "gameOverBottomBackground") as! SKSpriteNode
-        gameOverBanner = self.childNode(withName: "gameOverBanner") as! MSButtonNode
+        gameOverBanner = self.childNode(withName: "gameOverBanner") as! SKSpriteNode
         restartButton = gameOverBottomBackground.childNode(withName: "restartButton") as! MSButtonNode
+        homeButton = gameOverTopBackground.childNode(withName: "homeButton") as! MSButtonNode
         
-        /* Set play button handler */
-        restartButton.selectedHandler = {
+        /* Set restart button handler */
+        restartButton.selectedHandler = { [unowned self] in
+            
+            self.playTicking()
+            
+            /* Disable home button */
+            self.homeButton.isUserInteractionEnabled = false
             
             /* Play animation */
             self.gameOverTopBackground.run(self.moveRightAction)
@@ -198,11 +226,66 @@ class GameScene: SKScene {
                 self.isUserInteractionEnabled = true
                 
                 /* Display game time */
-                self.gameTime = self.startTime
+                self.maxGameTime = self.startTime
+                self.gameTime = self.maxGameTime
+                self.gameTimerLabel.isHidden = false
                 
                 /* Start game timer */
                 self.timerOn = true
+                
+                /* Re-enable taps */
+                self.restartButton.state = .msButtonNodeStateActive
+                self.homeButton.isUserInteractionEnabled = true
             }
+        }
+
+        homeButton.selectedHandler = { [unowned self] in
+            
+            /* Disable restart button */
+            self.restartButton.isUserInteractionEnabled = false
+            
+            /* Play animation */
+            self.titleTopBackground.run(self.resetAction)
+            self.titleBottomBackground.run(self.resetAction)
+            
+            self.playBanner.run(self.resetAction) { [unowned self] in
+                
+                /* Hide game over screen */
+                self.gameOverTopBackground.isHidden = true
+                self.gameOverBottomBackground.isHidden = true
+                self.gameOverBanner.isHidden = true
+                
+                /* Reset game over screen */
+                self.gameOverTopBackground.run(self.moveRightAction)
+                self.gameOverBottomBackground.run(self.moveRightAction)
+                self.gameOverBanner.run(self.moveLeftAction) {
+                    
+                    /* Show game over screen elements */
+                    self.gameOverTopBackground.isHidden = false
+                    self.gameOverBottomBackground.isHidden = false
+                    self.gameOverBanner.isHidden = false
+                }
+                
+                /* Hide/reset labels */
+                self.categoryLabelLong1.isHidden = true
+                self.categoryLabelLong2.isHidden = true
+                self.categoryLabelShort.isHidden = true
+                self.letterLabel.text = ""
+                self.iTop.isHidden = true
+                self.iBottom.isHidden = true
+                self.gameTimerLabel.isHidden = true
+                
+                /* Disable touches */
+                self.isUserInteractionEnabled = false
+                
+                /* Enable play button */
+                self.playBanner.state = .msButtonNodeStateActive
+                
+                /* Re-enable taps */
+                self.homeButton.state = .msButtonNodeStateActive
+                self.restartButton.isUserInteractionEnabled = true
+            }
+
         }
 
     }
@@ -211,29 +294,38 @@ class GameScene: SKScene {
         getRandomCategory()
         
         /* Reset game timer appearance */
-        self.gameTimerLabel.removeAllActions()
-        self.gameTimerLabel.setScale(1)
-        self.gameTimerLabel.alpha = 1
+        gameTimerLabel.removeAllActions()
+        gameTimerLabel.setScale(1)
+        gameTimerLabel.alpha = 1
         
         /* Set game timer value */
-        self.gameTime = self.startTime
+        gameTime = maxGameTime
+        
+        /* Play audio */
+        playSound(soundName: "correct")
     }
     
     override func update(_ currentTime: TimeInterval) {
         
         /* Check if game started */
         if timerOn {
+        
+            
             if !gameTimerLabel.hasActions(){
                 
                 /* Run animation and decrement timer */
-                gameTimerLabel.run(SKAction(named: "Pulse")!) {
+                gameTimerLabel.run(SKAction(named: "Pulse")!) { [unowned self] in
                     self.gameTime -= 1
                 }
             }
-        }
-        
-        if gameTime <= 0 {
             
+            if gameTime <= 0 {
+                
+                /* Turn off game timer */
+                timerOn = false
+                
+                runGameOver()
+            }
         }
     }
     
@@ -304,24 +396,75 @@ class GameScene: SKScene {
     
     func runGameOver() {
         
-        /* Play animation */
-        gameOverTopBackground.run(moveLeftAction)
-        gameOverBottomBackground.run(moveLeftAction)
+        /* Vibrate phone */
+        AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
         
-        gameOverBanner.run(moveRightAction) {
+        /* Play audio */
+        playSound(soundName: "wrong")
+        tickPlayer?.stop()
+        
+        /* Disable touches */
+        self.isUserInteractionEnabled = false
+        self.restartButton.isUserInteractionEnabled = false
+        self.homeButton.isUserInteractionEnabled = false
+        
+        /* Play animation */
+        gameOverTopBackground.run(resetAction)
+        gameOverBottomBackground.run(resetAction)
+        
+        gameOverBanner.run(resetAction) { [unowned self] in
             
-            /* Display category */
-            self.getRandomCategory()
+            /* Hide/reset labels */
+            self.categoryLabelLong1.isHidden = true
+            self.categoryLabelLong2.isHidden = true
+            self.categoryLabelShort.isHidden = true
+            self.letterLabel.text = ""
+            self.iTop.isHidden = true
+            self.iBottom.isHidden = true
+            self.gameTimerLabel.isHidden = true
             
-            /* Enable touches */
-            self.isUserInteractionEnabled = true
-            
-            /* Display game time */
-            self.gameTime = self.startTime
-            
-            /* Start game timer */
-            self.timerOn = true
+            /* Enable restart and home button */
+            self.restartButton.isUserInteractionEnabled = true
+            self.homeButton.isUserInteractionEnabled = true
         }
-
     }
+    
+    func playSound(soundName: String) {
+        guard let sound = NSDataAsset(name: soundName) else {
+            print("asset not found")
+            return
+        }
+        
+        do {
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+            try AVAudioSession.sharedInstance().setActive(true)
+            
+            player = try AVAudioPlayer(data: sound.data, fileTypeHint: AVFileTypeMPEGLayer3)
+            
+            player!.play()
+            
+        } catch let error as NSError {
+            print("error: \(error.localizedDescription)")
+        }
+    }
+    
+    func playTicking() {
+        guard let sound = NSDataAsset(name: "ticktock") else {
+            print("asset not found")
+            return
+        }
+        
+        do {
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+            try AVAudioSession.sharedInstance().setActive(true)
+            
+            tickPlayer = try AVAudioPlayer(data: sound.data, fileTypeHint: AVFileTypeMPEGLayer3)
+            tickPlayer!.numberOfLoops = -1
+            tickPlayer!.play()
+            
+        } catch let error as NSError {
+            print("error: \(error.localizedDescription)")
+        }
+    }
+
 }
